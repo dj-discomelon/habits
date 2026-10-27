@@ -37,15 +37,15 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none;pad
 .banner{background:#fff4d6;color:#5c4400;padding:8px 14px;font-size:13px}
 
 /* list */
-.dayhead{display:flex;align-items:center;background:var(--strip);height:64px;padding:0 6px 0 36px;
+.dayhead{display:flex;align-items:center;background:var(--strip);height:64px;padding:0 6px 0 calc(62px - var(--cw,52px)/2);
   box-shadow:0 1px 2px rgba(0,0,0,.12);position:relative;z-index:1}
-.dc{width:52px;flex:none;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);font-weight:500;text-transform:uppercase}
+.dc{width:var(--cw,52px);flex:none;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);font-weight:500;text-transform:uppercase}
 .hrow{background:var(--card);margin-top:3px;box-shadow:0 1px 2px rgba(0,0,0,.1);padding-bottom:4px}
 .hn{display:flex;align-items:flex-start;gap:10px;padding:12px 14px 0;cursor:pointer}
 .hn span{font-size:18px;line-height:1.3;white-space:normal;overflow-wrap:anywhere;min-width:0}
 .hn svg{flex:none;margin-top:2px}
-.marks{display:flex;padding:0 6px 0 36px}
-.chk{width:52px;height:44px;flex:none;display:flex;align-items:center;justify-content:center}
+.marks{display:flex;padding:0 6px 0 calc(62px - var(--cw,52px)/2)}
+.chk{width:var(--cw,52px);height:44px;flex:none;display:flex;align-items:center;justify-content:center}
 .chk svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
 .chk.off{color:var(--empty)}
 .chk.off svg{stroke-width:2.2}
@@ -459,9 +459,9 @@ function toolbarList(){
 }
 function renderList(){
   const today=todayStr();
-  const cols=Math.max(3,Math.min(14,Math.floor((Math.min(vw(),900)-48)/52)));
+  const W=Math.min(vw(),900), cols=Math.max(3,Math.min(31,Math.floor((W-68)/52+0.5))), cw=(W-68)/(cols-0.5); // cells stretch to fill the row; first mark stays under the first letter
   const dates=[]; for(let i=0;i<cols;i++) dates.push(addDays(today,-i));
-  let html=toolbarList()+banner()+'<div class="wrap">';
+  let html=toolbarList()+banner()+'<div class="wrap" style="--cw:'+cw.toFixed(2)+'px">';
   if(!db.habits.length){
     html+='<div class="empty">No habits yet.<br>Press + to add your first one.</div>';
   }else{
